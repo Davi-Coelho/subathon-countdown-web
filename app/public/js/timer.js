@@ -1,4 +1,4 @@
-let countUpFunction = null
+let countDownFunctionRef = null
 let finalDate = 0
 
 const ws = new WebSocket(`ws:localhost:3005/?channel=${channel}`)
@@ -8,23 +8,38 @@ ws.onopen = function () {
 }
 
 ws.onmessage = function (msg) {
-    const finalDate = parseFloat(msg.data)
-    const timeLeft = finalDate - now
-    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-    setTimer(hours, minutes, seconds)
+    
+    const data = JSON.parse(msg.data)
+    console.log(data)
+    
+    if (data.type === 'start') {
+        finalDate = parseFloat(data.finalDate)
+        updateTimer()
+        playTime()
+    } else if (data.type === 'pause') {
+        clearInterval(countDownFunctionRef)
+    } else if (data.type === 'update') {
+        finalDate = parseFloat(data.finalDate)
+        updateTimer()
+    } else if (data.type === 'resume') {
+        finalDate = parseFloat(data.finalDate)
+        playTime()
+    } else if (data.type === 'stop') {
+        finalDate = 0
+        setTimer(0, 0, 0)
+        clearInterval(countDownFunctionRef)
+    }
 }
 
 const playTime = () => {
-    countUpFunction = setInterval(function () {
+    countDownFunctionRef = setInterval(function () {
         const now = new Date().getTime()
         const timeLeft = finalDate - now
 
         if (timeLeft >= 0) {
             setDigit('secondUnit')
         } else {
-            clearInterval(countUpFunction)
+            clearInterval(countDownFunctionRef)
         }
     }, 1000);
 }
@@ -134,4 +149,34 @@ function setTimer(hours, minutes, seconds) {
     document.querySelector('body').classList.add('play')
 }
 
-setTimer(0, 0, 0)
+function updateTimer() {
+    const now = new Date().getTime()
+    const timeLeft = finalDate - now
+    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    setTimer(hours, minutes, seconds)
+}
+
+async function loadConfig() {
+
+    const config = JSON.parse(await (await fetch(`/config/${channel}`)).text())
+
+    if (Object.keys(config).length) {
+        finalDate = parseFloat(config.finalDate)
+        
+        if (finalDate) {
+            updateTimer()
+            
+            if (config.running) {
+                playTime()
+            }
+        } else {
+            setTimer(0, 0, 0)
+        }
+    } else {
+        setTimer(0, 0, 0)
+    }
+}
+
+loadConfig()
