@@ -4,7 +4,8 @@
   "description": "Contador de Tempo em Subathons para a Twitch",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "serve": "pm2 start app.js --name subathon_countdown_timer"
   },
   "repository": {
     "type": "git",
