@@ -1,5 +1,6 @@
 const express = require('express')
 const consign = require('consign')
+const db = require('./dbConnection')
 const app = express()
 
 app.set('view engine', 'ejs')
@@ -11,7 +12,10 @@ app.use(express.urlencoded({ extended: true }))
 
 consign()
     .include('app/controllers')
+    .then('app/models')
     .then('app/routes')
     .into(app)
+
+app.db = db
 
 module.exports = app
