@@ -160,7 +160,7 @@ function updateTimer() {
 
 async function loadConfig() {
 
-    const config = JSON.parse(await (await fetch(`/config/${channel}`)).text())
+    const config = JSON.parse(await (await fetch(`/subathon/config/${channel}`)).text())
 
     if (Object.keys(config).length) {
         finalDate = parseFloat(config.finalDate)
