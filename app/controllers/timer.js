@@ -1,7 +1,11 @@
 module.exports.showTimer = (application, req, res) => {
     const channel = req.params.channel
-    
-    res.render('timer', { channel })
+
+    if (channel === 'ca_rou_') {
+        res.render('timer2', { channel })
+    } else {
+        res.render('timer', { channel })
+    }    
 }
 
 module.exports.updateTimer = (application, req, res) => {
