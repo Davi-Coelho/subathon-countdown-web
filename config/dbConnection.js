@@ -16,6 +16,10 @@ const configSchema = mongoose.Schema({
     running: {
         type: Boolean,
         required: true
+    },
+    timer: {
+        type: String,
+        required: true
     }
 })
 

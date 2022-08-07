@@ -1,11 +1,10 @@
-module.exports.showTimer = (application, req, res) => {
+module.exports.showTimer = async (application, req, res) => {
     const channel = req.params.channel
 
-    if (channel === 'ca_rou_') {
-        res.render('timer2', { channel })
-    } else {
-        res.render('timer', { channel })
-    }    
+    const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
+    const channelConfig = await ConfigDAO.getConfig(channel)
+
+    res.render(channelConfig.timer, { channel })
 }
 
 module.exports.updateTimer = (application, req, res) => {
@@ -39,9 +38,9 @@ module.exports.getConfig = async (application, req, res) => {
 
 module.exports.createConfig = (application, req, res) => {
     const channel = req.params.channel
-    const finalDate = req.body.finalDate
+    const timer = req.body.timer ? req.body.timer : 'default_timer'
     const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
-    ConfigDAO.saveConfig(channel,  finalDate, (result) => {
+    ConfigDAO.saveConfig(channel,  timer, (result) => {
 
         res.sendStatus(200)
     })    

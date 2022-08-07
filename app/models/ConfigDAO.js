@@ -7,11 +7,12 @@ class ConfigDAO {
         return await this._ConfigModel.findOne({ channel })
     }
 
-    saveConfig = (channel, finalDate, callback) => {
+    saveConfig = (channel, timer, callback) => {
         this._ConfigModel.create({
             channel: channel,
-            finalDate: finalDate,
-            running: false
+            finalDate: 0,
+            running: false,
+            timer: timer
         }).then(result => {
             console.log(result)
             console.log(`Configuração do canal ${channel} criada!`)
