@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="/static_subathon/css/styles2.css">
+		<title>Timer</title>
+	</head>
+	<body>
+		<div id="clock">		
+			<img id="clock-image" src="/static_subathon/images/clock.png">
+			<div id="clock-text">
+				<span id="timer">00:00:00</span>
+			</div>
+		</div>
+		<script type="text/javascript">
+			const channel = <%- JSON.stringify(channel) %>
+		</script>
+        <script src="/static_subathon/js/timer2.js"></script>
+	</body>
+</html>
