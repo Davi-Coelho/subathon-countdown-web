@@ -18,6 +18,7 @@ ws.onmessage = function (msg) {
         playTime()
     } else if (data.type === 'pause') {
         clearInterval(countDownFunctionRef)
+        countDownFunctionRef = null
     } else if (data.type === 'update') {
         finalDate = parseFloat(data.finalDate)
         updateTimer()
@@ -28,20 +29,24 @@ ws.onmessage = function (msg) {
         finalDate = 0
         setTimer(0, 0, 0)
         clearInterval(countDownFunctionRef)
+        countDownFunctionRef = null
     }
 }
 
 const playTime = () => {
-    countDownFunctionRef = setInterval(function () {
-        const now = new Date().getTime()
-        const timeLeft = finalDate - now
-
-        if (timeLeft >= 0) {
-            setDigit('secondUnit')
-        } else {
-            clearInterval(countDownFunctionRef)
-        }
-    }, 1000);
+    if (countDownFunctionRef === null) {
+        countDownFunctionRef = setInterval(function () {
+            const now = new Date().getTime()
+            const timeLeft = finalDate - now
+    
+            if (timeLeft >= 0) {
+                setDigit('secondUnit')
+            } else {
+                clearInterval(countDownFunctionRef)
+                countDownFunctionRef = null
+            }
+        }, 1000);
+    }
 }
 
 function setDigit(digitClass) {
