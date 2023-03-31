@@ -4,7 +4,7 @@ const timer = document.querySelector('#timer')
 let countDownFunctionRef = null
 let finalDate = 0
 
-const ws = new WebSocket(`ws:localhost:3005/?channel=${channel}`)
+const ws = new WebSocket(`ws:localhost:3000/?channel=${channel}`)
 
 ws.onopen = function () {
     ws.send('conectado!')
