@@ -25,9 +25,13 @@
   "homepage": "https://github.com/Davi-Coelho/subathon-countdown-web#readme",
   "dependencies": {
     "consign": "^0.1.6",
+    "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "mongoose": "^6.5.0",
     "ws": "^8.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

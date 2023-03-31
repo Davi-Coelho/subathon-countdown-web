@@ -14,11 +14,10 @@ function onMessage(ws, data) {
 }
  
 function onConnection(ws, req) {
-    ws.isAlive = true
     const splittedMessage = req.url.split('?')
-    const channel = splittedMessage[1].split('=')[1]
 
-    ws.id = channel
+    ws.isAlive = true
+    ws.id = splittedMessage[1].split('=')[1]
     ws.on('error', error => onError(ws, error))
     ws.on('message', data => onMessage(ws, data))
     ws.on('pong', heartbeat)
