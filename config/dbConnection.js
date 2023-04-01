@@ -1,3 +1,4 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 
 const {
@@ -15,11 +16,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    code: {
+    accessToken: {
         type: String,
         required: true
     },
-    accessToken: {
+    refreshToken: {
         type: String,
         required: true
     },
@@ -37,7 +38,7 @@ const userSchema = mongoose.Schema({
     }
 })
 
-const userModel = mongoose.model('subathon_config', userSchema)
+const UserModel = mongoose.model('subathon_config', userSchema)
 
 async function initDatabase() {
     try {
@@ -50,4 +51,4 @@ async function initDatabase() {
 
 initDatabase()
 
-module.exports = { userModel }
+module.exports = { UserModel }

@@ -1,14 +1,14 @@
 module.exports.showTimer = async (application, req, res) => {
-    const channel = req.params.channel
+    const id = req.params.id
 
-    const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
-    const channelConfig = await ConfigDAO.getConfig(channel)
+    const UserDAO = new application.app.models.UserDAO(application.db.UserModel)
+    const channelConfig = await UserDAO.getConfig(id)
 
-    res.render(channelConfig.timer, { channel })
+    res.render(channelConfig.timer, { id })
 }
 
 module.exports.updateTimer = (application, req, res) => {
-    const channel = req.params.channel
+    const id = req.params.id
 
     const newConfig = {
         type: req.body.type,
@@ -16,32 +16,10 @@ module.exports.updateTimer = (application, req, res) => {
         running: req.body.running
     }
 
-    const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
-    ConfigDAO.updateConfig(channel, newConfig.finalDate, newConfig.running, (result) => {
-        const ws = Array.from(application.appWs.clients).filter(el => el.id === channel)
+    const UserDAO = new application.app.models.UserDAO(application.db.UserModel)
+    UserDAO.updateConfig(id, newConfig.finalDate, newConfig.running, (result) => {
+        const ws = Array.from(application.appWs.clients).filter(el => el.id === id)
         ws.forEach(el => el.send(JSON.stringify(newConfig)))
         res.sendStatus(200)
     })
-}
-
-module.exports.getConfig = async (application, req, res) => {
-    const channel = req.params.channel
-    const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
-    const channelConfig = (await ConfigDAO.getConfig(channel))
-
-    if (channelConfig) {        
-        res.send(channelConfig)
-    } else {
-        res.send({})
-    }
-}
-
-module.exports.createConfig = (application, req, res) => {
-    const channel = req.params.channel
-    const timer = req.body.timer ? req.body.timer : 'default_timer'
-    const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
-    ConfigDAO.saveConfig(channel,  timer, (result) => {
-
-        res.sendStatus(200)
-    })    
 }

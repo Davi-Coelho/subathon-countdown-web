@@ -1,15 +1,18 @@
-class ConfigDAO {
-    constructor(ConfigModel) {
-        this._ConfigModel = ConfigModel
+class UserDAO {
+    constructor(UserModel) {
+        this._UserModel = UserModel
     }
 
-    getConfig = async (channel) => {
-        return await this._ConfigModel.findOne({ channel })
+    getConfig = async (id) => {
+        return await this._UserModel.findOne({ id })
     }
 
-    saveConfig = (channel, timer, callback) => {
-        this._ConfigModel.create({
+    saveConfig = (id, channel, timer, code, accessToken, callback) => {
+        this._UserModel.create({
+            id: id,
             channel: channel,
+            code: code,
+            accessToken: accessToken,
             finalDate: 0,
             running: false,
             timer: timer
@@ -22,9 +25,9 @@ class ConfigDAO {
         })
     }
 
-    updateConfig = (channel, finalDate, running, callback) => {
-        this._ConfigModel.updateOne({
-            channel: channel
+    updateConfig = (id, finalDate, running, callback) => {
+        this._UserModel.updateOne({
+                id: id
         },
         {
             $set: {
@@ -33,16 +36,16 @@ class ConfigDAO {
             }
         }).then(result => {
             console.log(result)
-            console.log(`${channel} atualizado!`)
+            console.log(`${id} atualizado!`)
             callback(result)
         }).catch(error => {
             console.log(error)
-            console.log(`Erro ao atualizar o canal ${channel}`)
+            console.log(`Erro ao atualizar o canal ${id}`)
         })
     }
 
 }
 
 module.exports = () => {
-    return ConfigDAO
+    return UserDAO
 }
