@@ -7,21 +7,14 @@ class UserDAO {
         return await this._UserModel.findOne({ id })
     }
 
-    saveConfig = (id, channel, timer, code, accessToken, callback) => {
-        this._UserModel.create({
-            id: id,
-            channel: channel,
-            code: code,
-            accessToken: accessToken,
-            finalDate: 0,
-            running: false,
-            timer: timer
-        }).then(result => {
+    saveConfig = (streamlabsUser, callback) => {
+        this._UserModel.create(streamlabsUser).then(result => {
             console.log(result)
-            console.log(`Configuração do canal ${channel} criada!`)
-            callback(result)
+            console.log(`Configuração do canal ${streamlabsUser.streamlabsData.twitchUser.name} criada!`)
+            callback(result, null)
         }).catch(error => {
-            console.log(`Erro na criação da configuração do canal ${channel}!`)
+            console.log(`Erro na criação da configuração do canal ${streamlabsUser.streamlabsData.twitchUser.name}!`)
+            callback(null, error)
         })
     }
 
