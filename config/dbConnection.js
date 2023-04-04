@@ -39,7 +39,7 @@ const streamlabsUserSchema = mongoose.Schema({
     streamlabsData: streamlabsSchema
 }, { _id: false })
 
-const streamlabsUserModel = mongoose.model('users', streamlabsUserSchema)
+const streamlabsUserModel = mongoose.model('streamlabs_users', streamlabsUserSchema)
 
 async function initDatabase() {
     try {
