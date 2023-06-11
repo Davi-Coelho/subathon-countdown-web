@@ -1,7 +1,7 @@
 let countDownFunctionRef = null
 let finalDate = 0
 
-const ws = new WebSocket(`ws:localhost:3005/?channel=${channel}`)
+const ws = new WebSocket(`wss:subathontimer.davicoelho.com/?channel=${channel}`)
 
 ws.onopen = function () {
     ws.send('conectado!')
@@ -165,7 +165,7 @@ function updateTimer() {
 
 async function loadConfig() {
 
-    const config = JSON.parse(await (await fetch(`/subathon/config/${channel}`)).text())
+    const config = JSON.parse(await (await fetch(`/config/${channel}`)).text())
 
     if (Object.keys(config).length) {
         finalDate = parseFloat(config.finalDate)

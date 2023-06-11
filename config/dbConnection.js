@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost:27017/subathon_countdown')
-    .then(() => console.log('Database connected!'))
-    .catch(() => console.log('Database connection error!'))
+const {
+    DB,
+    DB_USER,
+    DB_PASS
+} = process.env
 
 const configSchema = mongoose.Schema({
     channel: {
@@ -24,5 +26,16 @@ const configSchema = mongoose.Schema({
 })
 
 const ConfigModel = mongoose.model('subathon_config', configSchema)
+
+async function initDatabase() {
+    try {
+        await mongoose.connect(`mongodb://${DB_USER}:${DB_PASS}@mongo:27017/${DB}?authSource=admin`)
+        console.log('Conectado ao banco de dados!')
+    } catch (err) {
+        console.log(`mongoConnectError: ${err}`)
+    }
+}
+
+initDatabase()
 
 module.exports = { ConfigModel }
