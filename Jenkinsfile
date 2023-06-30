@@ -1,4 +1,7 @@
 node {
+    agent {
+        label 'ridley'
+    }
     def app
 
     stage('Clone repository') {
