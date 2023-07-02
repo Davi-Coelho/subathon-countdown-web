@@ -15,8 +15,9 @@ node('ridley') {
         }
     }
 
-    /*stage('Trigger deploy') {
+    stage('Trigger deploy') {
         echo "Triggering subathon-timer job"
-        build job: 'subathontimer', parameters: []
-    }*/
+        build job: 'subathontimer', parameters: [password(name: 'DB_PASS', value: DB_PASS),
+                                                 string(name: 'TAG', value: env.BUILD_NUMBER)]
+    }
 }
