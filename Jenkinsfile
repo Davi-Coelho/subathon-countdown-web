@@ -17,7 +17,7 @@ node('ridley') {
 
     stage('Trigger deploy') {
         echo "Triggering subathon-timer job"
-        build job: 'subathontimer', parameters: [password(name: 'DB_PASS', value: DB_PASS),
+        build job: 'subathontimer', wait: false, parameters: [password(name: 'DB_PASS', value: DB_PASS),
                                                  string(name: 'TAG', value: env.BUILD_NUMBER)]
     }
 }
