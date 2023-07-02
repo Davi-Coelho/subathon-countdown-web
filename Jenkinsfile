@@ -6,13 +6,7 @@ node('ridley') {
     }
 
     stage('Build image') {
-        app = docker.build("registry.davicoelho.com/subathon-timer/timer")
-    }
-
-    stage('Test image') {
-        app.inside {
-            sh 'echo "Tests passed"'
-        }
+        app = docker.build("registry.davicoelho.com/subathon-timer/timer", "--build-arg password=${DB_PASS} .")
     }
 
     stage('Push image') {
