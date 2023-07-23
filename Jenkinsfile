@@ -1,4 +1,4 @@
-node('ridley') {
+node {
     def app
 
     stage('Clone repository') {
