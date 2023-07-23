@@ -29,7 +29,7 @@ const ConfigModel = mongoose.model('subathon_config', configSchema)
 
 async function initDatabase() {
     try {
-        await mongoose.connect(`mongodb://${DB_USER}:${DB_PASS}@mongo:27017/${DB}?authSource=admin`)
+        await mongoose.connect(`mongodb://${DB_USER}:${DB_PASS}@mongo:27017/${DB}?authSource=${DB}`)
         console.log('Conectado ao banco de dados!')
     } catch (err) {
         console.log(`mongoConnectError: ${err}`)
