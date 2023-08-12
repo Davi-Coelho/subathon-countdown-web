@@ -1,6 +1,6 @@
 FROM node:16-alpine
 ARG password
-ENV DB_USER=subathontimer
+ENV DB_USER=admin
 ENV DB_PASS=$password
 ENV DB=subathontimer
 WORKDIR /usr/src/app
