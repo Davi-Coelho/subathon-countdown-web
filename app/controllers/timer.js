@@ -7,7 +7,7 @@ module.exports.showTimer = async (application, req, res) => {
     res.render(channelConfig.timer, { channel })
 }
 
-module.exports.updateTimer = (application, req, res) => {
+module.exports.updateTimer = async (application, req, res) => {
     const channel = req.params.channel
 
     const newConfig = {
@@ -17,9 +17,11 @@ module.exports.updateTimer = (application, req, res) => {
     }
 
     const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
-    ConfigDAO.updateConfig(channel, newConfig.finalDate, newConfig.running, (result) => {
-        const ws = Array.from(application.appWs.clients).filter(el => el.id === channel)
-        ws.forEach(el => el.send(JSON.stringify(newConfig)))
+    ConfigDAO.updateConfig(channel, newConfig.finalDate, newConfig.running, async (result) => {
+        const io = application.appWs
+        const allClients = await io.fetchSockets()
+        const client = allClients.filter(el => el.channel === channel)[0]
+        io.to(client.id).emit("message", JSON.stringify(newConfig))
         res.sendStatus(200)
     })
 }

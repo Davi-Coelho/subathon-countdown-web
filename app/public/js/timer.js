@@ -1,15 +1,14 @@
 let countDownFunctionRef = null
 let finalDate = 0
 
-const ws = new WebSocket(`wss:subathontimer.davicoelho.com/?channel=${channel}`)
+const socket = io(`ws://localhost/?channel=${channel}`)
 
-ws.onopen = function () {
-    ws.send('conectado!')
-}
+socket.on('connect', () => {
+    socket.send('conectado!')
+});
 
-ws.onmessage = function (msg) {
-    
-    const data = JSON.parse(msg.data)
+socket.on('message', function (msg) {
+    const data = JSON.parse(msg)
     console.log(data)
     
     if (data.type === 'start') {
@@ -31,7 +30,7 @@ ws.onmessage = function (msg) {
         clearInterval(countDownFunctionRef)
         countDownFunctionRef = null
     }
-}
+})
 
 const playTime = () => {
     if (countDownFunctionRef === null) {

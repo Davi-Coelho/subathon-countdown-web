@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const {
     DB,
     DB_USER,
-    DB_PASS
+    DB_PASS,
+    ENV
 } = process.env
 
 const configSchema = mongoose.Schema({
@@ -29,7 +30,9 @@ const ConfigModel = mongoose.model('subathon_config', configSchema)
 
 async function initDatabase() {
     try {
-        await mongoose.connect(`mongodb://${DB_USER}:${DB_PASS}@mongo-0.mongo,mongo-1.mongo/${DB}?authSource=admin`)
+        const url = ENV !== 'dev' ? `mongodb://${DB_USER}:${DB_PASS}@mongo-0.mongo,mongo-1.mongo/${DB}?authSource=admin` : 'mongodb://localhost:27017/subathontimer'
+        console.log(url)
+        await mongoose.connect(url)
         console.log('Conectado ao banco de dados!')
     } catch (err) {
         console.log(`mongoConnectError: ${err}`)
