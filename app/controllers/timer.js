@@ -19,9 +19,7 @@ module.exports.updateTimer = async (application, req, res) => {
     const ConfigDAO = new application.app.models.ConfigDAO(application.db.ConfigModel)
     ConfigDAO.updateConfig(channel, newConfig.finalDate, newConfig.running, async (result) => {
         const io = application.appWs
-        const allClients = await io.fetchSockets()
-        const client = allClients.filter(el => el.channel === channel)[0]
-        io.to(client.id).emit("message", JSON.stringify(newConfig))
+        io.to(channel).emit("message", JSON.stringify(newConfig))
         res.sendStatus(200)
     })
 }
