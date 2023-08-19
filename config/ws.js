@@ -16,7 +16,7 @@ function onConnection(ws) {
 module.exports = (server) => {
     wss = new Server(server)
 
-    const pubClient = createClient({ url: 'redis://redis-0.redis:6379'})
+    const pubClient = createClient({ url: 'redis://redis-0.redis'})
     const subClient = pubClient.duplicate()
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
