@@ -2,8 +2,6 @@ let wss = null
 const { Server } = require('socket.io')
 const { createAdapter } = require('@socket.io/redis-adapter')
 const { createClient } = require('redis')
-
-const { REDIS_PASS } = process.env
  
 function onMessage(ws, data) {
     console.log(`${ws.channel} ${data}`)
@@ -18,7 +16,7 @@ function onConnection(ws) {
 module.exports = (server) => {
     wss = new Server(server)
 
-    const pubClient = createClient({ url: "redis://redis-0.redis.redis.svc.cluster.local", password: REDIS_PASS })
+    const pubClient = createClient({ url: "redis://redis-0.redis.redis.svc.cluster.local" })
     const subClient = pubClient.duplicate()
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {

@@ -6,7 +6,7 @@ node {
     }
 
     stage('Build image') {
-        app = docker.build("registry.davicoelho.com/subathon-timer/timer", "--build-arg password=${DB_PASS} --build-arg redis_password=${REDIS_PASSWORD} .")
+        app = docker.build("registry.davicoelho.com/subathon-timer/timer", "--build-arg password=${DB_PASS} .")
     }
 
     stage('Push image') {
