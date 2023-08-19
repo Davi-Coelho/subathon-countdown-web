@@ -1,13 +1,14 @@
 let countDownFunctionRef = null
 let finalDate = 0
 
-const socket = io(`ws://localhost/?channel=${channel}`)
+const socket = io(`wss://subathontimer.davicoelho.com/?channel=${channel}`)
 
 socket.on('connect', () => {
     socket.send('conectado!')
-});
+})
 
 socket.on('message', function (msg) {
+    
     const data = JSON.parse(msg)
     console.log(data)
     
