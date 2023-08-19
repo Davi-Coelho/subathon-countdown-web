@@ -18,7 +18,7 @@ function onConnection(ws) {
 module.exports = (server) => {
     wss = new Server(server)
 
-    const pubClient = createClient({ host: "redis-0.redis.redis.svc.cluster.local", port: 6379, password: REDIS_PASS })
+    const pubClient = createClient({ url: "redis://redis-0.redis.redis.svc.cluster.local", password: REDIS_PASS })
     const subClient = pubClient.duplicate()
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
