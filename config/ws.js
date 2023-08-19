@@ -14,7 +14,7 @@ function onConnection(ws) {
 }
  
 module.exports = (server) => {
-    wss = new Server(server)
+    wss = new Server(server, { transports: ['websocket'] })
 
     const pubClient = createClient({ url: "redis://redis-0.redis.redis.svc.cluster.local" })
     const subClient = pubClient.duplicate()

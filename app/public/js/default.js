@@ -4,7 +4,7 @@ const timer = document.querySelector('#timer')
 let countDownFunctionRef = null
 let finalDate = 0
 
-const socket = io(`wss://subathontimer.davicoelho.com/?channel=${channel}`)
+const socket = io(`/?channel=${channel}`, { transports: ['websocket'] })
 
 socket.on('connect', () => {
     socket.send('conectado!')
