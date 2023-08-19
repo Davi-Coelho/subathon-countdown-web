@@ -21,7 +21,7 @@ module.exports = (server) => {
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
         wss.adapter(createAdapter(pubClient, subClient))
-        // wss.listen(80)
+        wss.listen(server)
     })
  
     wss.on('connection', onConnection)
