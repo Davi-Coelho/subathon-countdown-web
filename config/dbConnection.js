@@ -30,7 +30,7 @@ const ConfigModel = mongoose.model('subathon_config', configSchema)
 
 async function initDatabase() {
     try {
-        const url = ENV !== 'dev' ? `mongodb://${DB_USER}:${DB_PASS}@mongo-0.mongo/${DB}?authSource=admin` : 'mongodb://localhost:27017/subathontimer'
+        const url = ENV !== 'dev' ? `mongodb://${DB_USER}:${DB_PASS}@mongo-0.mongo/${DB}?authSource=admin` : 'mongodb://mongo:27017/subathontimer'
         await mongoose.connect(url)
         console.log('Conectado ao banco de dados!')
     } catch (err) {
