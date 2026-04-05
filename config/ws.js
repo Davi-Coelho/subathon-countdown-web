@@ -16,7 +16,8 @@ function onConnection(ws) {
 module.exports = (server) => {
     wss = new Server(server, { transports: ['websocket'] })
 
-    const pubClient = createClient({ url: "redis://redis-0.redis.redis.svc.cluster.local" })
+    const redisUrl = process.env.REDIS_URL || "redis://redis.redis.svc.cluster.local"
+    const pubClient = createClient({ url: redisUrl })
     const subClient = pubClient.duplicate()
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
